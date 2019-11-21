@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">M08_UF1_Android_SopaDeLletres</string>
+    <string name="app_name">Sopa de lletres</string>
+    <string name="sopa_de_lletres">Sopa de lletres</string>
+    <string name="jugar">Jugar</string>
+    <string name="puntuacions">Puntuacions</string>
+    <string name="instruccions">Instruccions</string>
 </resources>
