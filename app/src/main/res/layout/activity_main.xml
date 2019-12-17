@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -43,21 +43,21 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:text="@string/jugar"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
         <Button
             android:id="@+id/scoresButton"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:text="@string/puntuacions"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
         <Button
             android:id="@+id/instructionsButton"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:text="@string/instruccions"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
     </LinearLayout>
 
