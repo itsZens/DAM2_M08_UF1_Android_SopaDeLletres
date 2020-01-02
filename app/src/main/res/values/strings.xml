@@ -20,5 +20,9 @@
         \nPer cada segon es perd 1 punt.
 
     </string>
+    <string name="afterGameScore_Congrats">Enhorabona!</string>
+    <string name="afterGameScore_finalScore">La teva puntuació és:</string>
+
+
 
 </resources>
