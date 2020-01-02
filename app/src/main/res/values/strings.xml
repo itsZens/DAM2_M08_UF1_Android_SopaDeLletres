@@ -18,8 +18,8 @@
     <string name="instruccions_scores_content">
         Per cada paraula es guanyen 100 punts.
         \nPer cada segon es perd 1 punt.
-
     </string>
+    <string name="afterGameScore_label">Puntuació final</string>
     <string name="afterGameScore_Congrats">Enhorabona!</string>
     <string name="afterGameScore_finalScore">La teva puntuació és:</string>
 
