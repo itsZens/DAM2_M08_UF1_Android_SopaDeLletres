@@ -1,6 +1,8 @@
 package edu.fje.dam2.m08_uf1_android_sopadelletres;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +55,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        // Database SQLite connection
+        SQLiteDatabase database = null;
+
+        try {
+            // Creating the table "SopaDeLletres"
+            database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT(10));");
+
+        } finally {
+            if (database != null) {
+                database.close();
+            }
+        }
 
     }
 

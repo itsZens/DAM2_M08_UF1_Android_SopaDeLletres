@@ -11,8 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".AfterGameScoreActivity"
-            android:label="@string/afterGameScore_label"
-            />
+            android:label="@string/afterGameScore_label" />
         <activity
             android:name=".InstructionsActivity"
             android:label="@string/instruccions" />
