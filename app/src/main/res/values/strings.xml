@@ -22,6 +22,7 @@
     <string name="afterGameScore_label">Puntuació final</string>
     <string name="afterGameScore_Congrats">Enhorabona!</string>
     <string name="afterGameScore_finalScore">La teva puntuació és:</string>
+    <string name="afterGameScore_button_backToMainMenu">Menú principal</string>
 
 
 
