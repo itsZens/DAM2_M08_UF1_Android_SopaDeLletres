@@ -17,7 +17,7 @@ public class AfterGameScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_after_game_score);
 
         // Button "Menú principal"
-        backToMainMenu = findViewById(R.id.playButton);
+        backToMainMenu = findViewById(R.id.backToMainMenu);
         backToMainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
