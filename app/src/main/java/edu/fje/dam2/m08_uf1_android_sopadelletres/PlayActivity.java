@@ -8,11 +8,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.EditText;
 import android.text.InputType;
+import java.util.Random;
+import java.util.ArrayList;
 
 
 public class PlayActivity extends AppCompatActivity {
 
+    // Input player name inserted on an AlertDialog
     public String username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,4 +53,6 @@ public class PlayActivity extends AppCompatActivity {
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
+
+
 }

@@ -1,87 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="fill_parent" >
 
-    <TableLayout
+    <WebView android:id="@+id/webkit"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0" >
+        android:layout_height="fill_parent"/>
 
-        <TableRow>
 
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_description_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_description_content"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow>
-            <TextView/>
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_objective_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_objective_content"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow>
-            <TextView/>
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_scores_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp" />
-        </TableRow>
-        <TableRow>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/instruccions_scores_content"
-                android:textSize="18sp" />
-        </TableRow>
-
-    </TableLayout>
-
-</ScrollView>
+</LinearLayout>
 
