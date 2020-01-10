@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
+import android.util.Log;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
             // Creating the table "SopaDeLletres"
             database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
 
-            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT(10));");
+            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT(10), game_duration TEXT, date TEXT);");
+
+            Log.i("MainActivity","Database created successfully");
+
 
         } finally {
             if (database != null) {
