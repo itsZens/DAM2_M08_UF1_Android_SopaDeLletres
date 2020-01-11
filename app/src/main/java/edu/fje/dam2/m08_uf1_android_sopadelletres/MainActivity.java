@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
-
-import android.util.Log;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -58,16 +58,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // Database SQLite connection
+        // Connection to SQLite Database --> Creation of the database
         SQLiteDatabase database = null;
 
         try {
             // Creating the table "SopaDeLletres"
             database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
-            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT, game_duration LONG, date TEXT);");
+            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards (username VARCHAR, score INTEGER, gameDuration INTEGER, currentTime TEXT);");
 
             Log.i("MainActivity","Database created successfully");
+
 
         } finally {
             if (database != null) {

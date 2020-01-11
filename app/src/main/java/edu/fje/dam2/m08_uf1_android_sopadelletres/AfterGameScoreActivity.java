@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,8 +22,6 @@ public class AfterGameScoreActivity extends AppCompatActivity {
     public String username;
     public int score;
     public long gameDuration;
-    public DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-    public DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 
     @Override
@@ -57,29 +54,24 @@ public class AfterGameScoreActivity extends AppCompatActivity {
                 // Return to MainActivity
                 Intent intent = new Intent(AfterGameScoreActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
 
     protected void saveScoreToDatabase(){
-        // Database SQLite connection
-        SQLiteDatabase database = null;
-
         // Get current time
         Date now = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = dateFormat.format(now);
 
+        // Database SQLite connection --> Inserting new scores to database
+        SQLiteDatabase database = null;
 
         try {
-            // Creating the table "SopaDeLletres"
+            // Connecting to "SopaDeLletres" table
             database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
-            // Insert new score record into "SopaDeLletres" (String username, INT score, Date game_duration and Date date(current time))
-            try{
-                database.execSQL("INSERT INTO SopaDeLletres(username, score, game_duration, date) VALUES (" + username + ", " + score + " , " + gameDuration + ", " + dateFormat.format(now) + ");");
-            } catch (Exception e){
-                String message = "Values: " + username + " " + score + " " + gameDuration + " " + dateFormat.format(now);
-                Log.i("AfterGameScoreActivity", message);
-            }
+            String sql = "INSERT INTO Scoreboards VALUES ('" + username + "', " + score + ", " + gameDuration + ", '" + currentTime + "');";
+            database.execSQL(sql);
 
             Log.i("AfterGameScoreActivity","Score saved successfully!");
 
@@ -93,4 +85,5 @@ public class AfterGameScoreActivity extends AppCompatActivity {
             }
         }
     }
+
 }
