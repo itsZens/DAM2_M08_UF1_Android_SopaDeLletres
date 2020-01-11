@@ -8,12 +8,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.EditText;
 import android.text.InputType;
+import java.util.Date;
 
 
 public class PlayActivity extends AppCompatActivity {
 
     // Input player name inserted on an AlertDialog
     public String username;
+    public int score;
+    public Date startGame;
+    public Date finishGame;
+    public Date gameDuaration;
 
 
     @Override
@@ -21,6 +26,7 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
+        //Asking for username to the user
         // Input username on start a game
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Nom del jugador");
@@ -50,6 +56,20 @@ public class PlayActivity extends AppCompatActivity {
 
         alertDialog.setCancelable(false);
         alertDialog.show();
+
+
+
+        /* Game code here */
+
+
+
+        // Passing username, score and game duration to AfterGameScoreActivity
+        Intent intent = new Intent(PlayActivity.this, AfterGameScoreActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("score", score);
+        intent.putExtra("gameDuration", gameDuaration.toString());
+        startActivity(intent);
+
     }
 
 }
