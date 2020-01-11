@@ -3,6 +3,7 @@
     package="edu.fje.dam2.m08_uf1_android_sopadelletres">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"

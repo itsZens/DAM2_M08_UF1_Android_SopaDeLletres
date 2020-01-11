@@ -8,8 +8,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.EditText;
 import android.text.InputType;
-import java.util.Random;
-import java.util.ArrayList;
 
 
 public class PlayActivity extends AppCompatActivity {
@@ -53,6 +51,5 @@ public class PlayActivity extends AppCompatActivity {
         alertDialog.setCancelable(false);
         alertDialog.show();
     }
-
 
 }
