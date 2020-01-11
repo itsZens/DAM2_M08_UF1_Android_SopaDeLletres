@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             // Creating the table "SopaDeLletres"
             database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
-            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT, game_duration TEXT, date TEXT);");
+            database.execSQL("CREATE TABLE IF NOT EXISTS Scoreboards(username VARCHAR, score INT, game_duration LONG, date TEXT);");
 
             Log.i("MainActivity","Database created successfully");
 

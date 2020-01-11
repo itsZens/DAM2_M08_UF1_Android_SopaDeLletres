@@ -22,8 +22,9 @@ public class AfterGameScoreActivity extends AppCompatActivity {
     public TextView scoreView;
     public String username;
     public int score;
-    public Date gameDuration;
-    DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    public long gameDuration;
+    public DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    public DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 
     @Override
@@ -36,21 +37,12 @@ public class AfterGameScoreActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         score = intent.getIntExtra("score", 0);
-
-        try {
-            gameDuration = timeFormat.parse(intent.getStringExtra("gameDuration"));
-        } catch (ParseException e){
-            Log.i("AfterGameScoreActivity", "Cannot parse game duration String to Date formatted as \"HH:mm:ss\"");
-        }
+        gameDuration = intent.getLongExtra("gameDuration", 0);
 
 
         // Showing score into textView (id: scoreView)
         scoreView = findViewById(R.id.scoreView);
-        scoreView.setText(score);
-
-
-        // Calling function saveScoreToDatabase()
-        saveScoreToDatabase();
+        scoreView.setText(String.valueOf(score));
 
 
         // Button "Menú principal"
@@ -59,9 +51,13 @@ public class AfterGameScoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
-                // Start a new activity onClick the button
+                // Calling function saveScoreToDatabase()
+                saveScoreToDatabase();
+
+                // Return to MainActivity
                 Intent intent = new Intent(AfterGameScoreActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -71,16 +67,19 @@ public class AfterGameScoreActivity extends AppCompatActivity {
         SQLiteDatabase database = null;
 
         // Get current time
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date now = new Date();
-        now.getTime();
 
 
         try {
             // Creating the table "SopaDeLletres"
             database = this.openOrCreateDatabase("SopaDeLletres", MODE_PRIVATE, null);
             // Insert new score record into "SopaDeLletres" (String username, INT score, Date game_duration and Date date(current time))
-            database.execSQL("INSERT INTO SopaDeLletres(username, score, game_duration, date) VALUES (" + username + ", " + score + " , " + gameDuration + ", " + dateFormat.format(now) + ");");
+            try{
+                database.execSQL("INSERT INTO SopaDeLletres(username, score, game_duration, date) VALUES (" + username + ", " + score + " , " + gameDuration + ", " + dateFormat.format(now) + ");");
+            } catch (Exception e){
+                String message = "Values: " + username + " " + score + " " + gameDuration + " " + dateFormat.format(now);
+                Log.i("AfterGameScoreActivity", message);
+            }
 
             Log.i("AfterGameScoreActivity","Score saved successfully!");
 
