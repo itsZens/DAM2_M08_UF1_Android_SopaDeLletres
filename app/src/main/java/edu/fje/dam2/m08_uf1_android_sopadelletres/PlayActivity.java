@@ -1,19 +1,27 @@
 package edu.fje.dam2.m08_uf1_android_sopadelletres;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.text.InputType;
 import android.util.Log;
-import android.widget.GridView;
-
 import java.time.Instant;
 import java.time.Duration;
+import java.util.ArrayList;
+
+import android.provider.ContactsContract;
+import android.widget.Toast;
+
 
 
 public class PlayActivity extends AppCompatActivity {
@@ -24,6 +32,10 @@ public class PlayActivity extends AppCompatActivity {
     public Instant startGame;
     public Instant finishGame;
     public long gameDurationSeconds;
+
+    // Check permissions to access to contacts
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
 
 
     @Override
@@ -69,6 +81,32 @@ public class PlayActivity extends AppCompatActivity {
         // Get time when starts the game
         startGame = Instant.now();
 
+        try{
+            // Getting contacts' name into an ArrayList<String>
+            ArrayList<String> contacts = new ArrayList<String>();
+            Cursor cursorContacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+            while (cursorContacts.moveToNext())
+            {
+
+                String name = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String[] nameSplit = name.split(" ");
+                contacts.add(nameSplit[0].toUpperCase());
+
+            }
+            cursorContacts.close();
+        } catch (SecurityException e){
+
+            Toast.makeText(PlayActivity.this,"L'app no té accés als contactes", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
+
+
+
+
+
 
 
         /* Game code here */
@@ -84,10 +122,39 @@ public class PlayActivity extends AppCompatActivity {
             }
         }
 
+        ArrayList<String> ar = new ArrayList<String>();
+        for(int i = 0; i < 100; i++){
+            ar.add("A");
+        }
 
-        GridView gridViewGame = findViewById(R.id.gridView_game);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
-                android.R.layout.simple_list_item_1, );*/
+        GridView gridViewGame = findViewById(R.id.gridViewGame);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, ar);
+
+        gridViewGame.setAdapter(adapter);*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -100,7 +167,7 @@ public class PlayActivity extends AppCompatActivity {
         Log.i("PlayActivity", "Duration: " + gameDurationSeconds);
 
         // Call function goToAfterGameScoreActivity() to show the final score and go to AfterGameScoreActivity
-        goToAfterGameScoreActivity();
+        //goToAfterGameScoreActivity();
 
     }
 
@@ -113,5 +180,6 @@ public class PlayActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 
 }
