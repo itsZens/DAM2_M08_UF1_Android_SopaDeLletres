@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 // Start a new activity onClick the button
-                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                Intent intent = new Intent(MainActivity.this, M17_CellesActivity.class);
                 startActivity(intent);
             }
         });

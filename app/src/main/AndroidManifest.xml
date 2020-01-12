@@ -25,6 +25,9 @@
             android:name=".PlayActivity"
             android:label="@string/jugar" />
         <activity
+            android:name=".M17_CellesActivity"
+            android:label="@string/m17" />
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
