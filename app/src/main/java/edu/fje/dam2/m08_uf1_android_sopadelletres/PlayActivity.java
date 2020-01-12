@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.text.InputType;
 import android.util.Log;
+import android.widget.GridView;
+
 import java.time.Instant;
 import java.time.Duration;
 
@@ -69,6 +72,23 @@ public class PlayActivity extends AppCompatActivity {
 
 
         /* Game code here */
+
+        // Create a matrix
+        //int matrix[][] = new int[10][10];
+
+
+        // Fill it with numbers
+        /*for(int rows = 0; rows < matrix.length; rows++){
+            for(int columns = 0; columns < matrix[rows].length; columns++){
+                matrix[rows][columns] = 1 + (int) (Math.random() * 100);
+            }
+        }
+
+
+        GridView gridViewGame = findViewById(R.id.gridView_game);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
+                android.R.layout.simple_list_item_1, );*/
+
 
 
         // When all words are found

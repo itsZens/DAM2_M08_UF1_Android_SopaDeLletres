@@ -23,6 +23,13 @@ public class ScoreboardsActivity extends AppCompatActivity {
         getScores();
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        getScores();
+    }
+
     public void getScores(){
 
         ArrayList<String> results = new ArrayList<String>();
@@ -54,7 +61,12 @@ public class ScoreboardsActivity extends AppCompatActivity {
                     } while (cursor.moveToNext());
                 }
             }
-        } finally {
+
+        } catch (android.database.CursorIndexOutOfBoundsException e){
+            results.add("Sense puntuacions");
+        }
+
+        finally {
             if (database != null) {
                 database.close();
             }
