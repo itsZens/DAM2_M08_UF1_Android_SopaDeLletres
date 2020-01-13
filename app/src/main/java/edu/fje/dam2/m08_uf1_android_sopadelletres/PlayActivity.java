@@ -1,13 +1,7 @@
 package edu.fje.dam2.m08_uf1_android_sopadelletres;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -20,7 +14,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 import android.provider.ContactsContract;
-import android.widget.Toast;
+import android.provider.Settings;
+import android.net.Uri;
 
 
 
@@ -28,14 +23,11 @@ public class PlayActivity extends AppCompatActivity {
 
     // Input player name inserted on an AlertDialog
     public String username;
+
     public int score;
     public Instant startGame;
     public Instant finishGame;
     public long gameDurationSeconds;
-
-    // Check permissions to access to contacts
-    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-
 
 
     @Override
@@ -85,22 +77,44 @@ public class PlayActivity extends AppCompatActivity {
             // Getting contacts' name into an ArrayList<String>
             ArrayList<String> contacts = new ArrayList<String>();
             Cursor cursorContacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
-            while (cursorContacts.moveToNext())
-            {
-
+            while (cursorContacts.moveToNext()){
                 String name = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String[] nameSplit = name.split(" ");
                 contacts.add(nameSplit[0].toUpperCase());
-
             }
+
             cursorContacts.close();
+
         } catch (SecurityException e){
+            // AlertDialog asking for access permissions to contacts
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setMessage(R.string.permissionsContactsDialog);
 
-            Toast.makeText(PlayActivity.this,"L'app no té accés als contactes", Toast.LENGTH_SHORT).show();
+            // Set up the buttons
+            alertDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
-            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-            startActivity(intent);
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            alertDialog.setCancelable(false);
+            alertDialog.show();
         }
+
 
 
 
