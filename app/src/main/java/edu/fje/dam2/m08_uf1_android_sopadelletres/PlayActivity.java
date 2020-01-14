@@ -74,13 +74,20 @@ public class PlayActivity extends AppCompatActivity {
         startGame = Instant.now();
 
         try{
-            // Getting contacts' name into an ArrayList<String>
+            // Getting 8 contacts' name into an ArrayList<String> (max length of the name => 7)
             ArrayList<String> contacts = new ArrayList<String>();
+            int numContacts = 0;
             Cursor cursorContacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
             while (cursorContacts.moveToNext()){
                 String name = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String[] nameSplit = name.split(" ");
-                contacts.add(nameSplit[0].toUpperCase());
+
+                if(numContacts != 8){
+                    if(name.length() <= 7){
+                        String[] nameSplit = name.split(" ");
+                        contacts.add(nameSplit[0].toUpperCase());
+                        numContacts++;
+                    }
+                }
             }
 
             cursorContacts.close();
