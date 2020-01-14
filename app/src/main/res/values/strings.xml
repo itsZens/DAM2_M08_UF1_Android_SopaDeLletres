@@ -25,6 +25,7 @@
     <string name="afterGameScore_button_backToMainMenu">Menú principal</string>
     <string name="m17">m17</string>
     <string name="seleccio">seleccio</string>
+    <string name="textview">TextView</string>
 
 
 </resources>

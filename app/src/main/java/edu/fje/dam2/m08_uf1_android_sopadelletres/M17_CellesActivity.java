@@ -4,6 +4,7 @@ package edu.fje.dam2.m08_uf1_android_sopadelletres;
 
 
 import java.lang.reflect.Array;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,14 +13,19 @@ import java.util.*;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-
+import java.time.Duration;
 
 /**
  * Classe que hereta de la classe Activity i que mostra com
@@ -36,10 +42,10 @@ public class M17_CellesActivity extends Activity  {
 
     public   String[] items = {String.valueOf('A'), String.valueOf('B'), String.valueOf('C'), String.valueOf('D'),  String.valueOf('E'), String.valueOf('F'),  String.valueOf('G'),  String.valueOf('H'),  String.valueOf('I'),  String.valueOf('J'),  String.valueOf('K'),
             String.valueOf('L'), String.valueOf('M'),  String.valueOf('N'), String.valueOf('O'), String.valueOf('P'),  String.valueOf('Q'),  String.valueOf('R'),  String.valueOf('S'),  String.valueOf('T'),  String.valueOf('U'), String.valueOf('V'),  String.valueOf('W'),
-            String.valueOf('X'),  String.valueOf('Y'),  String.valueOf('Z')};
+            String.valueOf('X'),  String.valueOf('Y'),  String.valueOf('Z'), String.valueOf('A'), String.valueOf('B'), String.valueOf('C'), String.valueOf('D'),  String.valueOf('E'), String.valueOf('F')};
     String item_clicked;
 
-    public String [] words = { "Ferran", "Android", "Computer", "keyboard", "Huawei", "Mouse", "RaspBerry", "Sergi", "Camera", "Mobile", "Jazz"};
+    public String [] words = {"Android", "Computer", "keyboard", "Huawei", "Mouse", "RaspBerry", "Sergi", "Camera", "Mobile", "Jazz"};
     public String [][] matriu = new String[10][10];
     public ArrayList<String> matriu_Mostrar = new ArrayList<String>();
     Random numAleatori = new Random();
@@ -51,6 +57,13 @@ public class M17_CellesActivity extends Activity  {
     String verificarParaula = "";
     String paraulaSolucio  = null;
     public ArrayList<Integer> pocicio = new ArrayList<Integer>();
+    public LinearLayout linearLayout;
+    public TextView txV = null;
+    public int num = 0;
+    final Handler handler = new Handler();
+
+
+
 
 
 
@@ -60,7 +73,28 @@ public class M17_CellesActivity extends Activity  {
         super.onCreate(icicle);
         setContentView(R.layout.activity_m17_celles);
 
+
         gridview = (GridView)findViewById(R.id.grid);
+        txV = (TextView)findViewById(R.id.timeTextView);
+        linearLayout = (LinearLayout)findViewById(R.id.linearLayout);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                chrono(startGame);
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
+
+        for (int z = 0; z < words.length; z ++){
+            TextView tv = new TextView(this);
+            tv.setText(words[z]);
+            tv.setId(z);
+
+            linearLayout.addView(tv);
+
+        }
 
 
             for (int i = 0; i < 10; i++) {
@@ -135,19 +169,34 @@ public class M17_CellesActivity extends Activity  {
 
 
 
-        List<String> ROW_LIST = new ArrayList<String>(matriu_Mostrar);
+        final List<String> ROW_LIST = new ArrayList<String>(matriu_Mostrar);
 
         gridview.setAdapter(new ArrayAdapter<String>(M17_CellesActivity.this, android.R.layout.simple_list_item_1,ROW_LIST));
+
+
+
+
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO Auto-generated method stub
-                try {
+                //Log.v("M17_CellesActivity", String.valueOf(view.getBackground()));
+
+               /* if (view.getBackground() == null || String.valueOf(view.getBackground()) == "android.graphics.drawable.ColorDrawable@c0e66ac"){
+
+                }else {
+                    view.setBackgroundColor(Color.parseColor("#fefefe"));
+
+                }*/
+                view.setBackgroundColor(Color.parseColor("#ff0000"));
+
                     if (solucio_matriu.get(position) != null){
                         paraulaSolucio = solucio_matriu.get(position).toUpperCase();
+                        int x = 0;
+                        while (words[x] != solucio_matriu.get(position)) x++;
+                        num = x;
 
                     }
                     if(parent.getItemAtPosition(position).toString() != null) {
@@ -158,7 +207,7 @@ public class M17_CellesActivity extends Activity  {
                    // Log.v("M17_CellesActivity",parent.getItemAtPosition(position).toString());
                    // Log.v("M17_CellesActivity", solucio_matriu.get(position));
 
-                    view.setBackgroundColor(Color.parseColor("#ff0000"));
+
 
                     if(paraulaSolucio.length() != verificarParaula.length()) {
                         //Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.length()+" VerficaP: "+verificarParaula.length());
@@ -170,7 +219,7 @@ public class M17_CellesActivity extends Activity  {
                                 Log.v("M17_CellesActivity","Reset");
 
                                 verificarParaula = "";
-                                pocicio = null;
+                                pocicio.clear();
                               //  break;
                             }
                         }
@@ -183,51 +232,31 @@ public class M17_CellesActivity extends Activity  {
                         if(i == paraulaSolucio.length()){
                             Log.v("M17_CellesActivity", "Iguals");
                             for(int x = 0; x< paraulaSolucio.length(); x++){
-                               parent = (AdapterView<?>) parent.getItemAtPosition(pocicio.get(x));
-                               parent.setBackgroundColor(Color.parseColor("#5eba7d"));
-                                if(x == 0) {
-                                    /*View view1 = (View) parent.getItemAtPosition(position);
-                                    view1.setBackgroundColor(Color.parseColor("#5eba7d"));*/
 
-                                }else {
-                                    /*View view1 = (View) parent.getItemAtPosition(position+x);
-                                    view1.setBackgroundColor(Color.parseColor("#5eba7d"));*/
-                                }
-                                //view.setBackgroundColor(Color.parseColor("#ff0000"));
+                                    gridview.getChildAt(pocicio.get(x)).setBackgroundColor(Color.parseColor("#0cce6d"));
+
 
                             }
+
+                            Log.v("M17_CellesActivity", "ParaulaT: "+paraulaSolucio);
+
+                            //while (paraulaSolucio.toLowerCase() != words[num].toLowerCase()) num++;
+                            RecuperarTextView(num);
+                           // txV =  txV.findViewWithTag(paraulaSolucio);
+
+
+
+
+
                         }
                         verificarParaula = "";
-                        pocicio = null;
+                        pocicio.clear();
 
 
 
                     }
 
-                   // Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio+" VerficaP: "+verificarParaula);
 
-                }catch (Exception ex) {
-                    /*verificarParaula += parent.getItemAtPosition(position).toString();
-
-
-                    if(paraulaSolucio.length() != verificarParaula.length()) {
-                        for(int i = 0; i < verificarParaula.length(); i++) {
-                            if(String.valueOf(verificarParaula.charAt(i)).toUpperCase() != String.valueOf(paraulaSolucio.charAt(i)).toUpperCase()){
-                                verificarParaula = "";
-                                break;
-                            }
-                        }
-                    }else if( paraulaSolucio.length() == verificarParaula.length()){
-
-                        if(paraulaSolucio.toUpperCase() == verificarParaula.toUpperCase()) {
-                            Log.v("Iguals", "Iguals");
-                        }
-
-                    }
-
-                    Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio+" VerficaP: "+verificarParaula);*/
-
-                }
 
 
 
@@ -236,7 +265,12 @@ public class M17_CellesActivity extends Activity  {
               // Toast.makeText(M17_CellesActivity.this, item_clicked, Toast.LENGTH_LONG).show();
 
             }
+
+
         });
+
+
+
     }
 
     public void verificarInputWord(String Word) {
@@ -275,6 +309,15 @@ public class M17_CellesActivity extends Activity  {
             }
 
 
+    }
+
+    public void RecuperarTextView(Integer num ) {
+        TextView tx = (TextView)this.findViewById(num);
+        tx.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        //Log.v("M17_CellesActivity", String.valueOf(linearLayout));
+       /* txV = new TextView(this);
+        txV = txV.findViewWithTag(paraula);
+        txV.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);*/
     }
 
     public void verificarCasellaMatriu(int valor, String Word) {
@@ -386,6 +429,12 @@ public class M17_CellesActivity extends Activity  {
 
                     }
                 }
+
+    }
+
+    public void chrono(Instant start) {
+        Instant now = Instant.now();
+        long seconds = Duration.between(start,now).getSeconds();
 
     }
 }
