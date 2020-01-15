@@ -61,6 +61,7 @@ public class M17_CellesActivity extends Activity  {
     public boolean isLenght = false;
     public boolean isHoritzontal = false;
     public boolean isVertical = false;
+    public boolean isDiagonal= false;
     public Hashtable<Integer, String> solucio_matriu = new Hashtable<Integer, String>();
     int valor =0;
     String verificarParaula = "";
@@ -76,7 +77,9 @@ public class M17_CellesActivity extends Activity  {
     public Instant startGame;
     public Instant finishGame;
     public long gameDurationSeconds;
-    ArrayList<String> contacts = new ArrayList<String>();
+    public ArrayList<String> contacts = new ArrayList<String>();
+    public  int numParaulesAcertades = 0;
+    public TextView crono;
 
 
 
@@ -94,6 +97,8 @@ public class M17_CellesActivity extends Activity  {
         gridview = (GridView)findViewById(R.id.grid);
         txV = (TextView)findViewById(R.id.timeTextView);
         linearLayout = (LinearLayout)findViewById(R.id.linearLayout);
+        crono = (TextView)findViewById(R.id.timeTextView);
+        crono.setText("Time: 0");
         gameSopaDeLletres();
 
         //Asking for username to the user
@@ -112,6 +117,16 @@ public class M17_CellesActivity extends Activity  {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 username = input.getText().toString();
+                final Handler handler = new Handler();
+                // Get time when starts the game
+                startGame = Instant.now();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        chrono(startGame);
+                        handler.postDelayed(this, 1000);
+                    }
+                }, 1000);
             }
         });
 
@@ -127,14 +142,7 @@ public class M17_CellesActivity extends Activity  {
         alertDialog.setCancelable(false);
         alertDialog.show();
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //chrono(startGame);
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
+
         words = new String[contacts.size()];
         for (int x = 0; x < contacts.size(); x++){
             words[x] = contacts.get(x);
@@ -162,8 +170,17 @@ public class M17_CellesActivity extends Activity  {
                 isVertical = false;
                 isHoritzontal = false;
                 isLenght = false;
+                isDiagonal = false;
 
-                verificarInputWord(words[z]);
+                if (z != 0){
+                    verificarInputWord(words[z]);
+
+                }else {
+                    paraulaDiagonal(words[z]);
+                }
+                //verificarInputWord(words[z]);
+
+
                  if(isVertical) {
                         Log.v("He entrat", "n0");
                      solucio_matriu.put(valor, words[z]);
@@ -203,20 +220,32 @@ public class M17_CellesActivity extends Activity  {
 
                         }
 
-                 } else {
+                 }else if(isDiagonal){
+                     solucio_matriu.put(valor, words[z]);
+                     for (int x = 0; x < words[z].length(); x++) {
+
+                         if( x == 0) {
+
+                             matriu_Mostrar.set(valor, String.valueOf(words[z].charAt(x)).toUpperCase());
+                             Log.v("M17_CellesActivity", matriu_Mostrar.get(valor));
+
+
+                         }else {
+                             matriu_Mostrar.set(valor + (x*11) , String.valueOf(words[z].charAt(x)).toUpperCase());
+                             Log.v("M17_CellesActivity", matriu_Mostrar.get(valor + x));
+
+                         }
+
+                     }
+
+                 }else {
 
                      verificarInputWord(words[z]);
 
                  }
 
-
-
-
             }
-
-
-
-
+            omplirMatriu();
 
 
 
@@ -233,15 +262,7 @@ public class M17_CellesActivity extends Activity  {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO Auto-generated method stub
-                //Log.v("M17_CellesActivity", String.valueOf(view.getBackground()));
 
-               /* if (view.getBackground() == null || String.valueOf(view.getBackground()) == "android.graphics.drawable.ColorDrawable@c0e66ac"){
-
-                }else {
-                    view.setBackgroundColor(Color.parseColor("#fefefe"));
-
-                }*/
                 view.setBackgroundColor(Color.parseColor("#ff0000"));
 
                     if (solucio_matriu.get(position) != null){
@@ -256,10 +277,6 @@ public class M17_CellesActivity extends Activity  {
                         pocicio.add(position);
 
                     }
-                   // Log.v("M17_CellesActivity",parent.getItemAtPosition(position).toString());
-                   // Log.v("M17_CellesActivity", solucio_matriu.get(position));
-
-
 
                     if(paraulaSolucio.length() != verificarParaula.length()) {
                         //Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.length()+" VerficaP: "+verificarParaula.length());
@@ -289,15 +306,22 @@ public class M17_CellesActivity extends Activity  {
 
 
                             }
+                            numParaulesAcertades++;
+                            if(numParaulesAcertades == words.length) {
+                                // When all words are found
+                                // Get time when finishes the game
+                                finishGame = Instant.now();
 
-                            Log.v("M17_CellesActivity", "ParaulaT: "+paraulaSolucio);
+                                // Calculating the duration of the game in seconds
+                                gameDurationSeconds = Duration.between(startGame, finishGame).getSeconds();
+                                Log.i("PlayActivity", "Duration: " + gameDurationSeconds);
+                                score = (numParaulesAcertades *100) -  Math.toIntExact(gameDurationSeconds);
+                                goToAfterGameScoreActivity();
+                            }
 
                             //while (paraulaSolucio.toLowerCase() != words[num].toLowerCase()) num++;
                             RecuperarTextView(num);
                            // txV =  txV.findViewWithTag(paraulaSolucio);
-
-
-
 
 
                         }
@@ -309,13 +333,6 @@ public class M17_CellesActivity extends Activity  {
                     }
 
 
-
-
-
-               // item_clicked = parent.getItemAtPosition(position).toString();
-
-              // Toast.makeText(M17_CellesActivity.this, item_clicked, Toast.LENGTH_LONG).show();
-
             }
 
 
@@ -325,9 +342,37 @@ public class M17_CellesActivity extends Activity  {
 
     }
 
+   public void paraulaDiagonal(String Word){
+        isDiagonal = false;
+
+        valor = numAleatori.nextInt(100);
+        int n0 = 0;
+        int n1 = valor;
+
+        if( valor >= 10) {
+
+            n0 = Integer.parseInt(String.valueOf(String.valueOf(valor).charAt(0)));
+            n1 = Integer.parseInt(String.valueOf(String.valueOf(valor).charAt(1)));
+
+
+        }
+        if( Word.length() + n0 <= 7 && Word.length() + n1 <=7) {
+            isDiagonal = true;
+
+            verificarCasellaMatriu(valor, Word);
+
+        }else{
+            isDiagonal = false;
+            paraulaDiagonal(Word);
+        }
+
+    }
+
     public void verificarInputWord(String Word) {
             isVertical = false;
             isHoritzontal = false;
+            isDiagonal = false;
+
 
 
             valor = numAleatori.nextInt(100);
@@ -342,8 +387,11 @@ public class M17_CellesActivity extends Activity  {
 
             }
 
+            if( Word.length() + n0 <= 7 && Word.length() + n1 <=7) {
+                isDiagonal = true;
+                verificarCasellaMatriu(valor, Word);
 
-            if( Word.length() + n0 <= 9) {
+            }else  if( Word.length() + n0 <= 9) {
                 isVertical = true;
 
                 verificarCasellaMatriu(valor, Word);
@@ -366,10 +414,7 @@ public class M17_CellesActivity extends Activity  {
     public void RecuperarTextView(Integer num ) {
         TextView tx = (TextView)this.findViewById(num);
         tx.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        //Log.v("M17_CellesActivity", String.valueOf(linearLayout));
-       /* txV = new TextView(this);
-        txV = txV.findViewWithTag(paraula);
-        txV.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);*/
+
     }
 
     public void verificarCasellaMatriu(int valor, String Word) {
@@ -438,31 +483,26 @@ public class M17_CellesActivity extends Activity  {
                             isLenght = true;
                         }
                     }else {
-                        verificarInputWord(Word);
-
-                        /*if( isDiagonal) {
+                        if(isDiagonal){
                             int x = 0;
                             int nLetters = 0;
-                            for (x = 0; x < Word.length(); x++) {
+                            for (x = 0; x < Word.length() ; x++) {
 
-                                if( x == 0) {
+                                if (x == 0) {
                                     if(!Character.isLetter(matriu_Mostrar.get(valor).charAt(0))){
                                         nLetters++;
-
-                                   //matriu_Mostrar.set(valor, String.valueOf(words[z].charAt(x)).toUpperCase());
-                                    //Log.v("M17_CellesActivity", matriu_Mostrar.get(valor));
-
-
-                                }else {
-                                        if(!Character.isLetter(matriu_Mostrar.get(valor + (x *11)).charAt(0))){
-                                            nLetters++;
-                                        }
-                                    //matriu_Mostrar.set(valor + (x*11) , String.valueOf(words[z].charAt(x)).toUpperCase());
-                                    //Log.v("M17_CellesActivity", matriu_Mostrar.get(valor + x));
                                     }
 
+                                } else {
+                                    if(!Character.isLetter(matriu_Mostrar.get(valor + (x *11)).charAt(0))){
+                                        nLetters++;
+                                    }
                                 }
+
+
                             }
+                            Log.v("M17_CellesActivity", "nLetters: "+nLetters + "X: "+ x);
+
                             if(nLetters != x){
                                 Log.v("M17_CellesActivity", "false");
 
@@ -477,7 +517,7 @@ public class M17_CellesActivity extends Activity  {
                         }else{
                             verificarInputWord(Word);
 
-                        }*/
+                        }
 
                     }
                 }
@@ -487,12 +527,13 @@ public class M17_CellesActivity extends Activity  {
     public void chrono(Instant start) {
         Instant now = Instant.now();
         long seconds = Duration.between(start,now).getSeconds();
+        crono = (TextView)findViewById(R.id.timeTextView);
+        crono.setText("Time: "+String.valueOf(seconds));
 
     }
 
     public void gameSopaDeLletres(){
-        // Get time when starts the game
-        startGame = Instant.now();
+
 
         try{
             // Getting 8 contacts' name into an ArrayList<String> (max length of the name => 7)
@@ -501,16 +542,26 @@ public class M17_CellesActivity extends Activity  {
             while (cursorContacts.moveToNext()){
                 String name = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 
-                if(numContacts != 8){
-                    if(name.length() <= 7){
-                        String[] nameSplit = name.split(" ");
-                        contacts.add(nameSplit[0].toUpperCase());
-                        numContacts++;
-                    }
-                }
+                String[] nameSplit = name.split(" ");
+                contacts.add(nameSplit[0].toUpperCase());
+
             }
 
             cursorContacts.close();
+            ArrayList<String> newcontacts = new ArrayList<String>();
+            for (int x = 0; x < contacts.size(); x++){
+                int num = numAleatori.nextInt(contacts.size());
+                if (numContacts != 8){
+                    if (contacts.get(num).length() <=8){
+                        newcontacts.add(contacts.get(num));
+                        numContacts++;
+                    }
+                }
+
+            }
+
+            contacts.clear();
+            contacts = newcontacts;
 
         } catch (SecurityException e){
             // AlertDialog asking for access permissions to contacts
@@ -574,13 +625,7 @@ public class M17_CellesActivity extends Activity  {
 
         gridViewGame.setAdapter(adapter);*/
 
-        // When all words are found
-        // Get time when finishes the game
-        finishGame = Instant.now();
 
-        // Calculating the duration of the game in seconds
-        gameDurationSeconds = Duration.between(startGame, finishGame).getSeconds();
-        Log.i("PlayActivity", "Duration: " + gameDurationSeconds);
 
         // Call function goToAfterGameScoreActivity() to show the final score and go to AfterGameScoreActivity
         //goToAfterGameScoreActivity();
@@ -594,5 +639,24 @@ public class M17_CellesActivity extends Activity  {
         intent.putExtra("gameDuration", gameDurationSeconds);
         startActivity(intent);
         finish();
+    }
+
+    public void omplirMatriu(){
+
+
+       for (int x = 0; x < matriu_Mostrar.size() ; x++) {
+            valor = numAleatori.nextInt(items.length);
+
+           if(!Character.isLetter(matriu_Mostrar.get(x).charAt(0))){
+               matriu_Mostrar.set(x, String.valueOf(items[valor].charAt(0)).toUpperCase());
+
+
+           }
+
+
+
+        }
+
+
     }
 }
