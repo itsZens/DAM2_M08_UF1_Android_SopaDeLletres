@@ -278,7 +278,7 @@ public class M17_CellesActivity extends Activity  {
 
                     }
                     if(paraulaSolucio != null) {
-                        
+
                         if(paraulaSolucio.length() != verificarParaula.length()) {
                             //Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.length()+" VerficaP: "+verificarParaula.length());
 
