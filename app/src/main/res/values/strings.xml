@@ -26,6 +26,7 @@
     <string name="m17">m17</string>
     <string name="seleccio">seleccio</string>
     <string name="textview">TextView</string>
+    <string name="permissionsContactsDialog">L\'aplicació no té permissos per accedir als contactes. Vols otorgar-li ara?</string>
 
 
 </resources>
