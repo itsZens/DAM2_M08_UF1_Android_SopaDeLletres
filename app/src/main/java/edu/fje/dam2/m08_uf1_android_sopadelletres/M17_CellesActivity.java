@@ -277,60 +277,64 @@ public class M17_CellesActivity extends Activity  {
                         pocicio.add(position);
 
                     }
+                    if(paraulaSolucio != null) {
+                        
+                        if(paraulaSolucio.length() != verificarParaula.length()) {
+                            //Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.length()+" VerficaP: "+verificarParaula.length());
 
-                    if(paraulaSolucio.length() != verificarParaula.length()) {
-                        //Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.length()+" VerficaP: "+verificarParaula.length());
+                            for(int i = 0; i < verificarParaula.length(); i++) {
+                                Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.charAt(i)+" VerficaP: "+verificarParaula.charAt(i));
 
-                        for(int i = 0; i < verificarParaula.length(); i++) {
-                            Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio.charAt(i)+" VerficaP: "+verificarParaula.charAt(i));
+                                if(verificarParaula.charAt(i) != paraulaSolucio.charAt(i)){
+                                    Log.v("M17_CellesActivity","Reset");
 
-                            if(verificarParaula.charAt(i) != paraulaSolucio.charAt(i)){
-                                Log.v("M17_CellesActivity","Reset");
-
-                                verificarParaula = "";
-                                pocicio.clear();
-                              //  break;
+                                    verificarParaula = "";
+                                    pocicio.clear();
+                                    //  break;
+                                }
                             }
-                        }
-                    }else  if( paraulaSolucio.length() == verificarParaula.length()){
-                       // Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio+" VerficaP: "+verificarParaula);
-                        int i = 0;
-                        for(int x = 0; x< paraulaSolucio.length(); x++){
-                            if(paraulaSolucio.charAt(x) == verificarParaula.charAt(x)) i++;
-                        }
-                        if(i == paraulaSolucio.length()){
-                            Log.v("M17_CellesActivity", "Iguals");
+                        }else  if( paraulaSolucio.length() == verificarParaula.length()){
+                            // Log.v("M17_CellesActivity","ParaulaV: "+paraulaSolucio+" VerficaP: "+verificarParaula);
+                            int i = 0;
                             for(int x = 0; x< paraulaSolucio.length(); x++){
+                                if(paraulaSolucio.charAt(x) == verificarParaula.charAt(x)) i++;
+                            }
+                            if(i == paraulaSolucio.length()){
+                                Log.v("M17_CellesActivity", "Iguals");
+                                for(int x = 0; x< paraulaSolucio.length(); x++){
 
                                     gridview.getChildAt(pocicio.get(x)).setBackgroundColor(Color.parseColor("#0cce6d"));
 
 
-                            }
-                            numParaulesAcertades++;
-                            if(numParaulesAcertades == words.length) {
-                                // When all words are found
-                                // Get time when finishes the game
-                                finishGame = Instant.now();
+                                }
+                                numParaulesAcertades++;
+                                if(numParaulesAcertades == words.length) {
+                                    // When all words are found
+                                    // Get time when finishes the game
+                                    finishGame = Instant.now();
 
-                                // Calculating the duration of the game in seconds
-                                gameDurationSeconds = Duration.between(startGame, finishGame).getSeconds();
-                                Log.i("PlayActivity", "Duration: " + gameDurationSeconds);
-                                score = (numParaulesAcertades *100) -  Math.toIntExact(gameDurationSeconds);
-                                goToAfterGameScoreActivity();
-                            }
+                                    // Calculating the duration of the game in seconds
+                                    gameDurationSeconds = Duration.between(startGame, finishGame).getSeconds();
+                                    Log.i("PlayActivity", "Duration: " + gameDurationSeconds);
+                                    score = (numParaulesAcertades *100) -  Math.toIntExact(gameDurationSeconds);
+                                    goToAfterGameScoreActivity();
+                                }
 
-                            //while (paraulaSolucio.toLowerCase() != words[num].toLowerCase()) num++;
-                            RecuperarTextView(num);
-                           // txV =  txV.findViewWithTag(paraulaSolucio);
+                                //while (paraulaSolucio.toLowerCase() != words[num].toLowerCase()) num++;
+                                RecuperarTextView(num);
+                                // txV =  txV.findViewWithTag(paraulaSolucio);
+
+
+                            }
+                            verificarParaula = "";
+                            pocicio.clear();
+
 
 
                         }
-                        verificarParaula = "";
-                        pocicio.clear();
-
-
-
                     }
+
+
 
 
             }
